@@ -80,3 +80,18 @@ Authorization: Bearer {{token}}
 ### KILOMETROS TOTALES POR CONDUCTOR
 GET http://localhost:3000/api/viajes/kilometros/conductor/2
 Authorization: Bearer {{token}}
+### PROBAR FECHAS INCORRECTAS DE VIAJE
+POST http://localhost:3000/api/viajes
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzk0ODY4MzE0LCJleHAiOjE3OTQ4ODI3MTR9.hSlVmpuibIeo8LemWbm9oB1XHHgWwp5-0zUc28Yb6xQ
+
+{
+    "vehiculo_id": 1,
+    "conductor_id": 1,
+    "fecha_salida": "2026-11-16T18:00:00",
+    "fecha_llegada": "2026-11-16T10:00:00",
+    "origen": "La Rioja",
+    "destino": "Córdoba",
+    "kilometros": 450,
+    "observaciones": "Prueba de validación"
+}

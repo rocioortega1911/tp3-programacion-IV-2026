@@ -1,4 +1,6 @@
+
 import { body, param } from 'express-validator';
+
 // VALIDACIONES PARA REGISTRO
 export const validarRegistro = [
     body('nombre')
@@ -83,6 +85,12 @@ export const validarConductor = [
     body('fecha_vencimiento_licencia')
         .isDate({ format: 'YYYY-MM-DD' })
         .withMessage('La fecha de vencimiento debe tener formato YYYY-MM-DD')
+        .custom((fechaVencimiento, { req }) => {
+            if (fechaVencimiento <= req.body.fecha_alta_licencia) {
+                throw new Error('La fecha de vencimiento debe ser posterior a la fecha de alta');
+            }
+            return true;
+        })
 ];
 
 // VALIDACIÓN DE ID
@@ -111,7 +119,13 @@ export const validarViaje = [
     body('fecha_llegada')
         .optional({ values: 'falsy' })
         .isISO8601()
-        .withMessage('La fecha de llegada debe ser válida'),
+        .withMessage('La fecha de llegada debe ser válida')
+        .custom((fechaLlegada, { req }) => {
+            if (new Date(fechaLlegada) < new Date(req.body.fecha_salida)) {
+                throw new Error('La fecha de llegada no puede ser anterior a la fecha de salida');
+            }
+            return true;
+        }),
 
     body('origen')
         .trim()
@@ -125,5 +139,5 @@ export const validarViaje = [
 
     body('kilometros')
         .isFloat({ min: 0 })
-        .withMessage('Los kilometros deben ser un numero igual o mayor a cero')
+        .withMessage('Los kilómetros deben ser un número igual o mayor a cero')
 ];
